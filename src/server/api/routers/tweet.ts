@@ -1,6 +1,7 @@
 import { string, z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
+
 export const tweetRouter = createTRPCRouter({
     createTweet: protectedProcedure
     .input(z.object({ text: z.string() }))
@@ -22,6 +23,10 @@ export const tweetRouter = createTRPCRouter({
                 },
             },
         });
+        // when a new tweet is created, we want to return it to the client and update the timeline in real time
+
+        // publish the tweet to the topic
+        ctx.pubsub.publish("tweet", tweet);
         return tweet;
          } catch (error) {
             console.log(error);
@@ -82,12 +87,14 @@ export const tweetRouter = createTRPCRouter({
         const { prisma } = ctx;
         try {
             const tweets = await prisma.tweet.findMany({
+                orderBy: {
+                    createdAt: "desc",
+                },
                 include: {
                     author: true,
                 },
                 
             });
-            console.log(tweets);
             return tweets;
         } catch (error) {
             console.log(error);

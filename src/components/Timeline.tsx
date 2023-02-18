@@ -11,7 +11,14 @@ import locales from 'dayjs/locale/fr'
 
 export function Timeline() {
     const { data, error, isLoading } = api.tweet.getAllTweets.useQuery();
+    
+    // We do a refetch every 5 seconds to update the timeline
+    api.tweet.getAllTweets.useQuery(undefined, {
+        refetchInterval: 5000,
+    });
 
+    
+    
     if (isLoading) {
         return <div>Loading...</div>;
     }
