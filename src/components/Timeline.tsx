@@ -2,7 +2,7 @@ import { CreateTweet } from "./CreateTweet";
 import { api } from "../utils/api";
 import { z } from "zod";
 import Image from "next/image";
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 // import 'dayjs/locale/fr'
 import locales from 'dayjs/locale/fr'
@@ -24,7 +24,7 @@ export function Timeline() {
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return <div>{error.message}</div>;
     }
 
     if (!data) {
@@ -49,7 +49,7 @@ export function Timeline() {
                     <div className="flex flex-row">
                         <div className="flex flex-col  justify-center">
                             <div className="">
-                            <Image src={tweet?.author?.image} width="48" height="48" alt="avatar" className="rounded-full z-0" />
+                            <Image src={tweet?.author?.image as string} width="48" height="48" alt="avatar" className="rounded-full z-0" />
                            </div>
                         </div>
                         <div className="flex flex-col ml-4">

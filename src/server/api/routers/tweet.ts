@@ -26,7 +26,6 @@ export const tweetRouter = createTRPCRouter({
         // when a new tweet is created, we want to return it to the client and update the timeline in real time
 
         // publish the tweet to the topic
-        ctx.pubsub.publish("tweet", tweet);
         return tweet;
          } catch (error) {
             console.log(error);
