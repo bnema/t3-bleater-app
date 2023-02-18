@@ -5,7 +5,7 @@ import { z } from "zod";
 export const tweetSchema = z.object({
   text: z.string(
     {
-      required_error: "Tweet is required",
+      required_error: "Tweet of 10 to 280 characters is required",
     }
   ).min(10).max(280),
 });
@@ -13,8 +13,9 @@ export const tweetSchema = z.object({
 export function CreateTweet() {
   const [text, setText] = useState("");
   const [error, setError] = useState("");
-
   const { mutateAsync } = api.tweet.createTweet.useMutation();
+  const getAllTweets = api.tweet.getAllTweets.useQuery();
+  
  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     console.log(text);
@@ -22,8 +23,15 @@ export function CreateTweet() {
     try {
       tweetSchema.parse({ text });
       await mutateAsync({ text });
+      setText("");
+      // refetch the timeline to get the new tweet
+      
+
     } catch (error) {
       setError(error);
+    } finally {
+      // refetch the timeline to get the new tweet
+      getAllTweets.refetch();
     }
   }
   

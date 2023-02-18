@@ -4,11 +4,13 @@ import { z } from "zod";
 import Image from "next/image";
 import * as dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+// import 'dayjs/locale/fr'
+import locales from 'dayjs/locale/fr'
+// import en from 'dayjs/locale/en'
 
 
 export function Timeline() {
     const { data, error, isLoading } = api.tweet.getAllTweets.useQuery();
-    console.log(data);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -22,9 +24,14 @@ export function Timeline() {
         return <div>no data</div>;
     }
     dayjs.extend(relativeTime)
+    // if the browser is in FR, use locales FR for dayjs and relativeTime
+    if (navigator.language === 'fr-FR') {
+        dayjs.locale(locales)
+        
+    } else {
+        dayjs.locale('en')
+    }
 
-
-    
     return (
         <>
         <CreateTweet />
