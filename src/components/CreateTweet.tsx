@@ -28,16 +28,22 @@ export function CreateTweet() {
     }
   }
 
- function handleSubmit
-  (e: React.FormEvent<HTMLFormElement>) {
-      e.preventDefault();
-      createTweet(text).then(() => {
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    createTweet(text)
+      .then(() => {
         setText("");
-        getAllTweets.refetch();
-      }).catch((error) => {
+        return getAllTweets.refetch();
+      })
+      .then(() => {
+        console.log("Tweet envoyé");
+      })
+      .catch((error) => {
         console.log(error);
       });
-    }
+  }
+
 
   // if the user is not logged in we hide the form
   if (status === "loading") {

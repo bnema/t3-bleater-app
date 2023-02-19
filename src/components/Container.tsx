@@ -1,4 +1,4 @@
-export function Container({ children, classNames }: { 
+export function Container({ children, classNames="" }: { 
     children: React.ReactNode
     classNames?: string
  }) {
