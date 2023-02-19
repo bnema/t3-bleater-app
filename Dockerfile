@@ -14,12 +14,6 @@ RUN npx prisma db push
 
 RUN npm run build
 
-# Create and set the working directory
-WORKDIR ${DIRECTORY}
-
-
-# Copy built application from build phase
-COPY --from=BUILD_IMAGE /app ./
 
 # Define some ENV Vars
 ENV PORT=3000 \
